@@ -1,6 +1,18 @@
 'use client';
+import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ThingsTable from './ThingsTable';
+
+interface Thing {
+   _id: string;
+   name: string;
+   description: string;
+   main_image_url: string;
+   country: string;
+   date: string;
+   rating: number;
+   statusText: string;
+}
 
 async function fetchThings(userUuid: string) {
    const response = await fetch(`/api/things?user_uuid=${userUuid}`);
@@ -11,8 +23,12 @@ async function fetchThings(userUuid: string) {
 }
 
 export default function ThingsView({ userUuid }: { userUuid: string }) {
+   if (!userUuid) {
+      throw new Error('userUuid is required');
+   }
+
    const {
-      data: things,
+      data: things = [],
       isLoading,
       isError,
       error
@@ -22,12 +38,32 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       staleTime: 1000 * 60 * 60 * 5 // 5 hours
    });
 
+   const [selectedThing, setSelectedThing] = useState<Thing | null>(null);
+   console.log('bb ~ ThingsView.tsx:22 ~ ThingsView ~ selectedThing:', selectedThing);
+
    if (isLoading) return <p>Loading...</p>;
-   if (isError) return <p>Error: {error.message}</p>;
+   if (isError) {
+      console.error('Error fetching things:', error);
+      return <p>Something went wrong while fetching the data. Please try again later.</p>;
+   }
    if (!things || things.length === 0) {
       return <p>No things found</p>;
    }
-   console.log('bb ~ ThingsView.tsx:28 ~ ThingsView ~ things:', things);
 
-   return <ThingsTable things={things} />;
+   //    console.log('bb ~ ThingsView.tsx:28 ~ ThingsView ~ things:', things);
+
+   //    async function handleItemClick(thingId: string) {
+   //       const thing = things.find((thing: Thing) => thing._id === thingId);
+   //       setSelectedThing(thing);
+   //    }
+
+   const handleItemClick = useCallback(
+      (thingId: string) => {
+         const thing = things?.find((thing: Thing) => thing._id === thingId);
+         setSelectedThing(thing || null);
+      },
+      [things]
+   );
+
+   return <ThingsTable things={things} handleRowClick={handleItemClick} />;
 }

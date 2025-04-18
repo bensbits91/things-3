@@ -9,7 +9,13 @@ import {
 import Image from 'next/image';
 import { truncateString } from '@/utils/truncateString';
 
-export default function ThingsTable({ things }: { things: any[] }) {
+export default function ThingsTable({
+   things,
+   handleRowClick
+}: {
+   things: any[];
+   handleRowClick: (thingId: string) => void;
+}) {
    interface Thing {
       name: string;
       description: string;
@@ -137,7 +143,12 @@ export default function ThingsTable({ things }: { things: any[] }) {
             </thead>
             <tbody>
                {table.getRowModel().rows.map(row => (
-                  <tr key={row.id} className='even:bg-[var(--bb-surface-a10)]' onClick={() => {console.log('Row clicked:', row.original);}}>
+                  <tr
+                     key={row.id}
+                     className='even:bg-[var(--bb-surface-a10)]'
+                     onClick={() => {
+                        handleRowClick(row.original._id);
+                     }}>
                      {row.getVisibleCells().map(cell => (
                         <td key={cell.id}>
                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
