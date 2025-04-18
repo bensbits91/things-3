@@ -80,7 +80,7 @@ ThingSchema.statics.getThingsByUser = async function (
    if (!userUuid) {
       throw new Error('userUuid is required');
    }
-   // await StatusService.loadStatuses(); // todo: remove this after confirming that statusMap is preloaded in layout.tsx
+   await StatusService.loadStatuses(); // todo: remove this after confirming that statusMap is preloaded in layout.tsx
    const statusMap = StatusService.getStatusMap();
    console.log('bb ~ ThingModel.ts:85 ~ statusMap:', statusMap);
    const mapStatusToText = (status: number, type: string) => statusMap[type][status];

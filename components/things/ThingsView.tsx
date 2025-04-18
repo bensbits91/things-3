@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import ThingsTable from './ThingsTable';
 
 async function fetchThings(userUuid: string) {
    const response = await fetch(`/api/things?user_uuid=${userUuid}`);
@@ -29,11 +30,5 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
    }
    console.log('bb ~ ThingsView.tsx:28 ~ ThingsView ~ things:', things);
 
-   return (
-      <ul>
-         {things.map((thing: { name: string }, index: number) => (
-            <li key={index}>{thing.name}</li>
-         ))}
-      </ul>
-   );
+   return <ThingsTable things={things} />;
 }
