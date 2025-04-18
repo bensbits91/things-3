@@ -12,7 +12,7 @@ export async function GET(req: Request) {
 
    try {
       const things = await getThingsByUser(userUuid);
-      console.log('bb ~ route.ts:15 ~ GET ~ things:', things);
+      // console.log('bb ~ route.ts:15 ~ GET ~ things:', things);
       return NextResponse.json(things, { status: 200 });
    } catch (error) {
       console.error('Error fetching things for user:', error);
