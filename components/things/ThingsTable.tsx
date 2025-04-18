@@ -3,6 +3,7 @@ import {
    ColumnDef,
    getCoreRowModel,
    getSortedRowModel,
+   getFilteredRowModel,
    flexRender
 } from '@tanstack/react-table';
 import Image from 'next/image';
@@ -46,7 +47,9 @@ export default function ThingsTable({ things }: { things: any[] }) {
                   />
                </div>
             );
-         }
+         },
+         enableSorting: false, // Disable sorting for the image column
+         enableColumnFilter: false // Disable filtering for the image column
       },
       {
          accessorKey: 'name',
@@ -90,7 +93,8 @@ export default function ThingsTable({ things }: { things: any[] }) {
       data: things,
       columns,
       getCoreRowModel: getCoreRowModel(),
-      getSortedRowModel: getSortedRowModel()
+      getSortedRowModel: getSortedRowModel(),
+      getFilteredRowModel: getFilteredRowModel() // needed for client-side filtering
    });
 
    return (
@@ -101,16 +105,31 @@ export default function ThingsTable({ things }: { things: any[] }) {
                   <tr key={headerGroup.id}>
                      {headerGroup.headers.map(header => (
                         <th
+                           className={
+                              header.column.getCanSort() ? 'cursor-pointer' : 'align-top'
+                           }
                            key={header.id}
-                           onClick={header.column.getToggleSortingHandler()}
-                           style={{ cursor: 'pointer' }}>
+                           onClick={header.column.getToggleSortingHandler()}>
                            {flexRender(
                               header.column.columnDef.header,
                               header.getContext()
                            )}
                            {header.column.getIsSorted() === 'asc' && ' 🔼'}
                            {header.column.getIsSorted() === 'desc' && ' 🔽'}
-                           {!header.column.getIsSorted() && ' ⬍'}
+                           {header.column.getCanSort() &&
+                              !header.column.getIsSorted() &&
+                              ' ⬍'}
+                           {header.column.getCanFilter() && (
+                              <input
+                                 type='text'
+                                 value={(header.column.getFilterValue() as string) || ''}
+                                 onChange={e =>
+                                    header.column.setFilterValue(e.target.value)
+                                 }
+                                 placeholder={`Filter ${header.column.columnDef.header}`}
+                                 style={{ marginTop: '5px', width: '100%' }}
+                              />
+                           )}
                         </th>
                      ))}
                   </tr>
@@ -118,7 +137,7 @@ export default function ThingsTable({ things }: { things: any[] }) {
             </thead>
             <tbody>
                {table.getRowModel().rows.map(row => (
-                  <tr key={row.id}>
+                  <tr key={row.id} className='even:bg-[var(--bb-surface-a10)]' onClick={() => {console.log('Row clicked:', row.original);}}>
                      {row.getVisibleCells().map(cell => (
                         <td key={cell.id}>
                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
