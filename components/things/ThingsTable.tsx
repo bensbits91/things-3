@@ -9,23 +9,24 @@ import {
 import Image from 'next/image';
 import { truncateString } from '@/utils/truncateString';
 
+interface Thing {
+    _id: string;
+    name: string;
+    description: string;
+    main_image_url: string;
+    country: string;
+    date: string;
+    rating: number;
+    statusText: string;
+ }
+ 
 export default function ThingsTable({
    things,
    handleRowClick
 }: {
-   things: any[];
+   things: Thing[];
    handleRowClick: (thingId: string) => void;
 }) {
-   interface Thing {
-      name: string;
-      description: string;
-      main_image_url: string;
-      country: string;
-      date: string;
-      rating: number;
-      statusText: string;
-   }
-
    interface CellInfo<TData, TValue> {
       getValue: () => TValue;
    }

@@ -41,6 +41,14 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
    const [selectedThing, setSelectedThing] = useState<Thing | null>(null);
    console.log('bb ~ ThingsView.tsx:22 ~ ThingsView ~ selectedThing:', selectedThing);
 
+   const handleItemClick = useCallback(
+      (thingId: string) => {
+         const thing = things?.find((thing: Thing) => thing._id === thingId);
+         setSelectedThing(thing || null);
+      },
+      [things]
+   );
+
    if (isLoading) return <p>Loading...</p>;
    if (isError) {
       console.error('Error fetching things:', error);
@@ -49,21 +57,6 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
    if (!things || things.length === 0) {
       return <p>No things found</p>;
    }
-
-   //    console.log('bb ~ ThingsView.tsx:28 ~ ThingsView ~ things:', things);
-
-   //    async function handleItemClick(thingId: string) {
-   //       const thing = things.find((thing: Thing) => thing._id === thingId);
-   //       setSelectedThing(thing);
-   //    }
-
-   const handleItemClick = useCallback(
-      (thingId: string) => {
-         const thing = things?.find((thing: Thing) => thing._id === thingId);
-         setSelectedThing(thing || null);
-      },
-      [things]
-   );
 
    return <ThingsTable things={things} handleRowClick={handleItemClick} />;
 }
