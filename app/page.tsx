@@ -26,7 +26,7 @@ export default async function Home() {
                      alt={nickname}
                      width={25}
                      height={25}
-                     style={{ marginLeft: 4, marginRight: 4 }}
+                     // style={{ marginLeft: 4, marginRight: 4 }}
                   />
                )}
                {nickname || email}

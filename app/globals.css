@@ -52,6 +52,8 @@
     --foreground: #ededed; */
       --background: var(--bb-surface-a0);
       --foreground: var(--bb-primary-a0);
+
+      --modal-bg: var(--bb-surface-a10);
    }
 }
 

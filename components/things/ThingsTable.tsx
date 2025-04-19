@@ -10,16 +10,16 @@ import Image from 'next/image';
 import { truncateString } from '@/utils/truncateString';
 
 interface Thing {
-    _id: string;
-    name: string;
-    description: string;
-    main_image_url: string;
-    country: string;
-    date: string;
-    rating: number;
-    statusText: string;
- }
- 
+   _id: string;
+   name: string;
+   description: string;
+   main_image_url: string;
+   country: string;
+   date: string;
+   rating: number;
+   statusText: string;
+}
+
 export default function ThingsTable({
    things,
    handleRowClick
@@ -128,13 +128,13 @@ export default function ThingsTable({
                               ' ⬍'}
                            {header.column.getCanFilter() && (
                               <input
+                                 className='mt-2 w-full'
                                  type='text'
                                  value={(header.column.getFilterValue() as string) || ''}
                                  onChange={e =>
                                     header.column.setFilterValue(e.target.value)
                                  }
                                  placeholder={`Filter ${header.column.columnDef.header}`}
-                                 style={{ marginTop: '5px', width: '100%' }}
                               />
                            )}
                         </th>

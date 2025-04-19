@@ -2,6 +2,7 @@
 import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ThingsTable from './ThingsTable';
+import ThingModal from './ThingModal';
 
 interface Thing {
    _id: string;
@@ -58,5 +59,18 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       return <p>No things found</p>;
    }
 
-   return <ThingsTable things={things} handleRowClick={handleItemClick} />;
+   return (
+      <>
+         <ThingsTable things={things} handleRowClick={handleItemClick} />;
+         <ThingModal
+            thing={selectedThing}
+            isOpen={!!selectedThing}
+            onOpenChange={open => {
+               if (!open) {
+                  setSelectedThing(null);
+               }
+            }}
+         />
+      </>
+   );
 }
