@@ -1,8 +1,8 @@
 'use client';
 import { useState, useCallback } from 'react';
 import { useGetThingsByUser } from '@/hooks/things/useGetThingsByUser';
-import ThingsTable from './ThingsTable';
-import ThingModal from './ThingModal';
+import ThingsTable from '../components/things/ThingsTable';
+import ThingModal from '../components/things/ThingModal';
 import { Thing } from '@/types/Thing';
 
 export default function ThingsView({ userUuid }: { userUuid: string }) {
