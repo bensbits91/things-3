@@ -7,19 +7,20 @@ import {
    flexRender
 } from '@tanstack/react-table';
 import Image from 'next/image';
+import { Rating } from '@/components/inputs';
 import { truncateString } from '@/utils/truncateString';
 
 interface Thing {
-    _id: string;
-    name: string;
-    description: string;
-    main_image_url: string;
-    country: string;
-    date: string;
-    rating: number;
-    statusText: string;
- }
- 
+   _id: string;
+   name: string;
+   description: string;
+   main_image_url: string;
+   country: string;
+   date: string;
+   rating: number;
+   statusText: string;
+}
+
 export default function ThingsTable({
    things,
    handleRowClick
@@ -31,23 +32,21 @@ export default function ThingsTable({
       getValue: () => TValue;
    }
 
-   const columns: ColumnDef<Thing, string>[] = [
+   const columns: ColumnDef<Thing, any>[] = [
       {
          accessorKey: 'main_image_url',
          header: 'Image',
          cell: (info: CellInfo<Thing, string>) => {
             const imageUrl = info.getValue();
             return (
-               <div className='w-12 h-12 relative overflow-hidden'>
+               <div className="relative h-12 w-12 overflow-hidden">
                   <Image
                      src={imageUrl}
-                     alt='Thing Image'
-                     //  width={48}
-                     //  height={48}
+                     alt="Thing Image"
                      fill
-                     sizes='48px' // todo: need response? sizes="(max-width: 768px) 100vw, 50px" // Full width on small screens, 50px on larger screens
+                     sizes="48px" // todo: need response? sizes="(max-width: 768px) 100vw, 50px" // Full width on small screens, 50px on larger screens
                      style={{ objectFit: 'cover' }}
-                     loading='lazy'
+                     loading="lazy"
                      //  onError={(e) => {
                      //     e.currentTarget.src = '/fallback-image.jpg'; // Replace with your fallback image
                      //  }}
@@ -55,8 +54,8 @@ export default function ThingsTable({
                </div>
             );
          },
-         enableSorting: false, // Disable sorting for the image column
-         enableColumnFilter: false // Disable filtering for the image column
+         enableSorting: false,
+         enableColumnFilter: false
       },
       {
          accessorKey: 'name',
@@ -72,7 +71,15 @@ export default function ThingsTable({
       },
       {
          accessorKey: 'rating',
-         header: 'Rating'
+         header: 'Rating',
+         cell: info => {
+            const rating = info.getValue();
+            return (
+               <div className="flex items-center gap-2">
+                  <Rating rating={rating} editable={false} starSize="sm" />
+               </div>
+            );
+         }
       },
       {
          accessorKey: 'statusText',
@@ -82,7 +89,10 @@ export default function ThingsTable({
          accessorKey: 'description',
          header: 'Description',
          cell: (info: CellInfo<Thing, string>) => {
-            const { newString, wasTruncated } = truncateString(info.getValue(), 50);
+            const { newString, wasTruncated } = truncateString(
+               info.getValue(),
+               50
+            );
             return (
                <div>
                   {wasTruncated ? (
@@ -113,28 +123,37 @@ export default function ThingsTable({
                      {headerGroup.headers.map(header => (
                         <th
                            className={
-                              header.column.getCanSort() ? 'cursor-pointer' : 'align-top'
+                              header.column.getCanSort()
+                                 ? 'cursor-pointer'
+                                 : 'align-top'
                            }
-                           key={header.id}
-                           onClick={header.column.getToggleSortingHandler()}>
-                           {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                           )}
-                           {header.column.getIsSorted() === 'asc' && ' 🔼'}
-                           {header.column.getIsSorted() === 'desc' && ' 🔽'}
-                           {header.column.getCanSort() &&
-                              !header.column.getIsSorted() &&
-                              ' ⬍'}
+                           key={header.id}>
+                           <div
+                              onClick={header.column.getToggleSortingHandler()}>
+                              {flexRender(
+                                 header.column.columnDef.header,
+                                 header.getContext()
+                              )}
+                              {header.column.getIsSorted() === 'asc' && ' 🔼'}
+                              {header.column.getIsSorted() === 'desc' && ' 🔽'}
+                              {header.column.getCanSort() &&
+                                 !header.column.getIsSorted() &&
+                                 ' ⬍'}
+                           </div>
                            {header.column.getCanFilter() && (
                               <input
-                                 type='text'
-                                 value={(header.column.getFilterValue() as string) || ''}
-                                 onChange={e =>
-                                    header.column.setFilterValue(e.target.value)
+                                 className="mt-2 w-full"
+                                 type="text"
+                                 value={
+                                    (header.column.getFilterValue() as string) ||
+                                    ''
                                  }
+                                 onChange={e => {
+                                    header.column.setFilterValue(
+                                       e.target.value
+                                    );
+                                 }}
                                  placeholder={`Filter ${header.column.columnDef.header}`}
-                                 style={{ marginTop: '5px', width: '100%' }}
                               />
                            )}
                         </th>
@@ -146,13 +165,16 @@ export default function ThingsTable({
                {table.getRowModel().rows.map(row => (
                   <tr
                      key={row.id}
-                     className='even:bg-[var(--bb-surface-a10)]'
+                     className="border-y-solid cursor-pointer border-t-2 border-b-0 border-transparent odd:bg-[var(--bb-surface-a10)] hover:border-b-2 hover:border-y-yellow-200"
                      onClick={() => {
                         handleRowClick(row.original._id);
                      }}>
                      {row.getVisibleCells().map(cell => (
-                        <td key={cell.id}>
-                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        <td key={cell.id} className="p-2">
+                           {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                           )}
                         </td>
                      ))}
                   </tr>
