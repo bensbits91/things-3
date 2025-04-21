@@ -1,6 +1,6 @@
 import { Toolbar, Button, Separator } from '@radix-ui/react-toolbar';
 import { Select, Number, Rating } from '@/components/inputs';
-import { useGetStatusMap } from '@/app/_hooks/statuses/useGetStatusMap';
+import { useGetStatusMap } from '@/hooks/statuses/useGetStatusMap';
 
 interface ThingModalToolbarProps {
    type: string;

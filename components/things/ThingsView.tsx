@@ -1,6 +1,6 @@
 'use client';
 import { useState, useCallback } from 'react';
-import { useGetThingsByUser } from '@/app/_hooks/things/useGetThingsByUser';
+import { useGetThingsByUser } from '@/hooks/things/useGetThingsByUser';
 import ThingsTable from './ThingsTable';
 import ThingModal from './ThingModal';
 
