@@ -1,6 +1,6 @@
 import { TypeIcon } from '@/components/icons';
 
-interface ThingModalInfoBarProps {
+interface ThingInfoBarProps {
    type?: string;
    date?: string;
    country?: string;
@@ -8,13 +8,13 @@ interface ThingModalInfoBarProps {
    genres?: string[];
 }
 
-export default function ThingModalInfoBar({
+export default function ThingInfoBar({
    type,
    date,
    country,
    language,
    genres
-}: ThingModalInfoBarProps) {
+}: ThingInfoBarProps) {
    const genreText = typeof genres === 'string' ? genres : genres?.join(', ');
    return (
       <div className='flex items-center gap-8'>

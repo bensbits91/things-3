@@ -2,6 +2,7 @@
 import { useState, useCallback } from 'react';
 import { useGetThingsByUser } from '@/hooks/things/useGetThingsByUser';
 import ThingsTable from '../components/things/ThingsTable';
+import ThingsGrid from '../components/things/ThingsGrid';
 import ThingModal from '../components/things/ThingModal';
 import { Thing } from '@/types/Thing';
 
@@ -16,6 +17,11 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       isError,
       error
    } = useGetThingsByUser(userUuid);
+
+   const [view, setView] = useState<'table' | 'grid'>('grid');
+   const handleViewChange = (newView: 'table' | 'grid') => {
+      setView(newView);
+   };
 
    const [selectedThing, setSelectedThing] = useState<Thing | null>(null);
    console.log(
@@ -47,7 +53,12 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
 
    return (
       <>
-         <ThingsTable things={things} handleRowClick={handleItemClick} />;
+         {view === 'table' && (
+            <ThingsTable things={things} handleRowClick={handleItemClick} />
+         )}
+         {view === 'grid' && (
+            <ThingsGrid things={things} handleCardClick={handleItemClick} />
+         )}
          {selectedThing && (
             <ThingModal
                thing={selectedThing}

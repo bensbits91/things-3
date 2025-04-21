@@ -17,6 +17,10 @@ const Rating = ({
 }: RatingProps) => {
    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+   if (!editable && (!rating || rating === 0)) {
+      return null; // Return null if rating is not provided
+   }
+
    const handleMouseEnter = (index: number): void => {
       setHoveredIndex(index);
    };

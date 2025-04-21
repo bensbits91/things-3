@@ -9,7 +9,7 @@ import {
 import Image from 'next/image';
 import { CloseIcon } from '@/components/icons';
 import ThingModalToolbar from './ThingModalToolbar';
-import ThingModalInfoBar from './ThingModalInfoBar';
+import ThingInfoBar from './ThingInfoBar';
 import { Thing } from '@/types/Thing';
 
 interface ThingModalProps {
@@ -66,7 +66,7 @@ export default function ThingModal({
                      times={times}
                      rating={rating}
                   />
-                  <ThingModalInfoBar
+                  <ThingInfoBar
                      type={type}
                      date={date}
                      country={country}
