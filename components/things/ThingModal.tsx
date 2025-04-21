@@ -10,21 +10,10 @@ import Image from 'next/image';
 import { CloseIcon } from '@/components/icons';
 import ThingModalToolbar from './ThingModalToolbar';
 import ThingModalInfoBar from './ThingModalInfoBar';
+import { Thing } from '@/types/Thing';
 
 interface ThingModalProps {
-   thing: {
-      name: string;
-      main_image_url: string;
-      description: string;
-      status: number;
-      times: number;
-      rating: number;
-      type: string;
-      date: string;
-      language: string;
-      country: string;
-      genres: string[];
-   };
+   thing: Thing | null | undefined;
    isOpen: boolean;
    onOpenChange: (open: boolean) => void;
 }
@@ -61,13 +50,13 @@ export default function ThingModal({
             </Close>
             <div className="flex h-full justify-between gap-12 p-4">
                <div className="relative h-full w-[500px] overflow-hidden">
-                  <Image
+                  {main_image_url && <Image
                      width={500}
                      height={500}
                      //  sizes='500px' // todo: need response? sizes="(max-width: 768px) 100vw, 50px" // Full width on small screens, 50px on larger screens
                      src={main_image_url}
                      alt={name}
-                  />
+                  />}
                </div>
                <div className="flex w-full flex-col gap-6">
                   <Title className="text-4xl">{name}</Title>

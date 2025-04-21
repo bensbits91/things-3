@@ -9,17 +9,7 @@ import {
 import Image from 'next/image';
 import { Rating } from '@/components/inputs';
 import { truncateString } from '@/utils/truncateString';
-
-interface Thing {
-   _id: string;
-   name: string;
-   description: string;
-   main_image_url: string;
-   country: string;
-   date: string;
-   rating: number;
-   statusText: string;
-}
+import { Thing } from '@/types/Thing';
 
 export default function ThingsTable({
    things,

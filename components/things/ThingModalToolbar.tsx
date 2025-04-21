@@ -3,10 +3,10 @@ import { Select, Number, Rating } from '@/components/inputs';
 import { useGetStatusMap } from '@/hooks/statuses/useGetStatusMap';
 
 interface ThingModalToolbarProps {
-   type: string;
-   status: number;
-   times: number;
-   rating: number;
+   type?: string;
+   status?: number;
+   times?: number;
+   rating?: number;
 }
 
 export default function ThingModalToolbar({
@@ -16,7 +16,7 @@ export default function ThingModalToolbar({
    rating
 }: ThingModalToolbarProps) {
    const { data: statusMap } = useGetStatusMap();
-   const typeStatuses = statusMap?.[type];
+   const typeStatuses = type ? statusMap?.[type] : statusMap?.default;
 
    const handleNumberEdit = (value: string) => {
       console.log('Number edited:', value);
@@ -30,12 +30,12 @@ export default function ThingModalToolbar({
             <Button>Action 1</Button>
             <Separator />
             <Select options={typeStatuses} initialSelection={status} />
-            <Number value={times} handleEdit={handleNumberEdit} />
-            <Rating
+            {times && <Number value={times} handleEdit={handleNumberEdit} />}
+            {rating && <Rating
                rating={rating}
                editable={true}
                handleEdit={value => console.log('Rating edited:', value)}
-            />
+            />}
          </Toolbar>
       </>
    );

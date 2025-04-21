@@ -3,22 +3,7 @@ import { useState, useCallback } from 'react';
 import { useGetThingsByUser } from '@/hooks/things/useGetThingsByUser';
 import ThingsTable from './ThingsTable';
 import ThingModal from './ThingModal';
-
-interface Thing {
-   _id: string;
-   name: string;
-   description: string;
-   main_image_url: string;
-   country: string;
-   date: string;
-   rating: number;
-   statusText: string;
-   status: number;
-   times: number;
-   type: string;
-   genres: string[];
-   language: string;
-}
+import { Thing } from '@/types/Thing';
 
 export default function ThingsView({ userUuid }: { userUuid: string }) {
    if (!userUuid) {
