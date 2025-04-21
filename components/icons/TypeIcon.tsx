@@ -1,7 +1,10 @@
-import { TvIcon, MovieIcon, BookIcon, VideoGameIcon, NoImageIcon } from '../icons';
+import { TvIcon, MovieIcon, BookIcon, VideoGameIcon, NoImageIcon } from '.';
 
-const TypeIcon = ({ type }) => {
-   // let typeIcon = <TvIcon />;
+interface TypeIconProps {
+   type: string;
+}
+
+const TypeIcon = ({ type }: TypeIconProps) => {
    switch (type) {
       case 'TV Show':
          return <TvIcon />;

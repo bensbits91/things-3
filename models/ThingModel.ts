@@ -1,14 +1,14 @@
-import mongoose, { Schema, model, models, Document } from 'mongoose';
-import { StatusService } from '@/services/StatusService';
+import { Schema, Model, model, models, Document, Types } from 'mongoose';
+import { getStatusMap } from '@/services/StatusService';
 
 export interface ThingDocument extends Document {
    user_uuid: string;
    name: string;
-   detail_id?: mongoose.Types.ObjectId;
+   detail_id?: Types.ObjectId;
    rating: number;
    status: number;
    times: number;
-   tags: mongoose.Types.ObjectId[];
+   tags: Types.ObjectId[];
    review?: string;
    notes?: string;
    is_soft_deleted: boolean;
@@ -19,11 +19,11 @@ export interface ThingDocument extends Document {
 export interface CreateThingData {
    user_uuid: string;
    name: string;
-   detail_id?: mongoose.Types.ObjectId;
+   detail_id?: Types.ObjectId;
    rating?: number;
    status?: number;
    times?: number;
-   tags?: mongoose.Types.ObjectId[];
+   tags?: Types.ObjectId[];
    review?: string;
    notes?: string;
    is_soft_deleted?: boolean;
@@ -40,7 +40,7 @@ const ThingSchema = new Schema<ThingDocument>(
          required: true
       },
       detail_id: {
-         type: mongoose.Schema.Types.ObjectId,
+         type: Schema.Types.ObjectId,
          ref: 'details'
       },
       rating: { type: Number, min: 0, max: 10, default: 0 },
@@ -48,7 +48,7 @@ const ThingSchema = new Schema<ThingDocument>(
       times: { type: Number, default: 0 },
       tags: [
          {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'tags'
          }
       ],
@@ -80,8 +80,7 @@ ThingSchema.statics.getThingsByUser = async function (
    if (!userUuid) {
       throw new Error('userUuid is required');
    }
-   await StatusService.loadStatuses(); // todo: remove this after confirming that statusMap is preloaded in layout.tsx
-   const statusMap = StatusService.getStatusMap();
+   const statusMap = await getStatusMap();
    // console.log('bb ~ ThingModel.ts:85 ~ statusMap:', statusMap);
    const mapStatusToText = (status: number, type: string) => statusMap[type][status];
 
@@ -131,7 +130,7 @@ ThingSchema.statics.getThingsByUser = async function (
    return things;
 };
 
-export interface ThingModel extends mongoose.Model<ThingDocument> {
+export interface ThingModel extends Model<ThingDocument> {
    createThing(thingData: CreateThingData): Promise<ThingDocument>;
    getThingsByUser(userUuid: string): Promise<ThingDocument[]>;
 }

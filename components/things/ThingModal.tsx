@@ -8,41 +8,83 @@ import {
 } from '@radix-ui/react-dialog';
 import Image from 'next/image';
 import { CloseIcon } from '@/components/icons';
+import ThingModalToolbar from './ThingModalToolbar';
+import ThingModalInfoBar from './ThingModalInfoBar';
+
+interface ThingModalProps {
+   thing: {
+      name: string;
+      main_image_url: string;
+      description: string;
+      status: number;
+      times: number;
+      rating: number;
+      type: string;
+      date: string;
+      language: string;
+      country: string;
+      genres: string[];
+   };
+   isOpen: boolean;
+   onOpenChange: (open: boolean) => void;
+}
 
 export default function ThingModal({
    thing,
    isOpen,
    onOpenChange
-}: {
-   thing: any;
-   isOpen: boolean;
-   onOpenChange: (open: boolean) => void;
-}) {
+}: ThingModalProps) {
    if (!thing) return null;
+   const {
+      name,
+      main_image_url,
+      description,
+      status,
+      times,
+      type,
+      date,
+      language,
+      country,
+      genres,
+      rating
+   } = thing;
 
    return (
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-         <Overlay className='fixed inset-0 bg-black/30' />
-         <Content className='fixed top-16 bottom-4 left-4 right-4 p-6 bg-[var(--modal-bg)] rounded-lg shadow-lg overflow-scroll'>
+         <Overlay className="fixed inset-0 bg-black/30" />
+         <Content className="fixed top-16 right-4 bottom-4 left-4 overflow-scroll rounded-lg bg-[var(--modal-bg)] p-6 shadow-lg">
             <Close
-               className='absolute top-4 right-4 hover:text-[yellow] w-4 h-4'
-               aria-label='Close'
+               className="absolute top-4 right-4 h-4 w-4 cursor-pointer transition duration-500 ease-in-out hover:text-[yellow]"
+               aria-label="Close"
                onClick={() => onOpenChange(false)}>
                <CloseIcon />
             </Close>
-            <div className='flex justify-between gap-12 p-4 h-full'>
-               <div className='w-[500px] h-full relative overflow-hidden'>
+            <div className="flex h-full justify-between gap-12 p-4">
+               <div className="relative h-full w-[500px] overflow-hidden">
                   <Image
                      width={500}
                      height={500}
                      //  sizes='500px' // todo: need response? sizes="(max-width: 768px) 100vw, 50px" // Full width on small screens, 50px on larger screens
-                     src={thing.main_image_url}
-                     alt={thing.name}
+                     src={main_image_url}
+                     alt={name}
                   />
                </div>
-               <div>
-                  <Title className='text-xl font-bold'>{thing.name}</Title>
-                  <Description className='mt-2'>{thing.description}</Description>
+               <div className="flex w-full flex-col gap-6">
+                  <Title className="text-4xl">{name}</Title>
+                  <ThingModalToolbar
+                     status={status}
+                     type={type}
+                     times={times}
+                     rating={rating}
+                  />
+                  <ThingModalInfoBar
+                     type={type}
+                     date={date}
+                     country={country}
+                     language={language}
+                     genres={genres}
+                  />
+                  <Description className="mt-2">{description}</Description>
                </div>
             </div>
          </Content>

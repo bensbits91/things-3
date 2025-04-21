@@ -1,6 +1,6 @@
 'use client';
 import { useState, useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useGetThingsByUser } from '@/app/_hooks/things/useGetThingsByUser';
 import ThingsTable from './ThingsTable';
 import ThingModal from './ThingModal';
 
@@ -13,14 +13,11 @@ interface Thing {
    date: string;
    rating: number;
    statusText: string;
-}
-
-async function fetchThings(userUuid: string) {
-   const response = await fetch(`/api/things?user_uuid=${userUuid}`);
-   if (!response.ok) {
-      throw new Error('Failed to fetch things');
-   }
-   return response.json();
+   status: number;
+   times: number;
+   type: string;
+   genres: string[];
+   language: string;
 }
 
 export default function ThingsView({ userUuid }: { userUuid: string }) {
@@ -33,14 +30,13 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       isLoading,
       isError,
       error
-   } = useQuery({
-      queryKey: ['things', userUuid],
-      queryFn: () => fetchThings(userUuid),
-      staleTime: 1000 * 60 * 60 * 5 // 5 hours
-   });
+   } = useGetThingsByUser(userUuid);
 
    const [selectedThing, setSelectedThing] = useState<Thing | null>(null);
-   console.log('bb ~ ThingsView.tsx:22 ~ ThingsView ~ selectedThing:', selectedThing);
+   console.log(
+      'bb ~ ThingsView.tsx:22 ~ ThingsView ~ selectedThing:',
+      selectedThing
+   );
 
    const handleItemClick = useCallback(
       (thingId: string) => {
@@ -53,7 +49,12 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
    if (isLoading) return <p>Loading...</p>;
    if (isError) {
       console.error('Error fetching things:', error);
-      return <p>Something went wrong while fetching the data. Please try again later.</p>;
+      return (
+         <p>
+            Something went wrong while fetching the data. Please try again
+            later.
+         </p>
+      );
    }
    if (!things || things.length === 0) {
       return <p>No things found</p>;
@@ -62,15 +63,17 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
    return (
       <>
          <ThingsTable things={things} handleRowClick={handleItemClick} />;
-         <ThingModal
-            thing={selectedThing}
-            isOpen={!!selectedThing}
-            onOpenChange={open => {
-               if (!open) {
-                  setSelectedThing(null);
-               }
-            }}
-         />
+         {selectedThing && (
+            <ThingModal
+               thing={selectedThing}
+               isOpen={!!selectedThing}
+               onOpenChange={open => {
+                  if (!open) {
+                     setSelectedThing(null);
+                  }
+               }}
+            />
+         )}
       </>
    );
 }

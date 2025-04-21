@@ -1,34 +1,49 @@
 {
-  "name": "things-3",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@auth0/nextjs-auth0": "^4.4.2",
-    "@radix-ui/react-dialog": "^1.1.10",
-    "@radix-ui/react-navigation-menu": "^1.2.6",
-    "@tanstack/react-query": "^5.74.4",
-    "@tanstack/react-table": "^8.21.3",
-    "jwt-decode": "^4.0.0",
-    "mongoose": "^8.13.2",
-    "next": "15.3.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.1",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+   "name": "things-3",
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+      "dev": "next dev --turbopack",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint"
+   },
+   "dependencies": {
+      "@auth0/nextjs-auth0": "^4.4.2",
+      "@radix-ui/react-dialog": "^1.1.10",
+      "@radix-ui/react-navigation-menu": "^1.2.6",
+      "@radix-ui/react-select": "^2.2.2",
+      "@radix-ui/react-toolbar": "^1.1.7",
+      "@tanstack/react-query": "^5.74.4",
+      "@tanstack/react-table": "^8.21.3",
+      "clsx": "^2.1.1",
+      "jwt-decode": "^4.0.0",
+      "mongoose": "^8.13.2",
+      "next": "15.3.1",
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0"
+   },
+   "devDependencies": {
+      "@eslint/eslintrc": "^3",
+      "@tailwindcss/postcss": "^4",
+      "@types/node": "^20",
+      "@types/react": "^19",
+      "@types/react-dom": "^19",
+      "eslint": "^9",
+      "eslint-config-next": "15.3.1",
+      "prettier": "^3.5.3",
+      "prettier-plugin-tailwindcss": "^0.6.11",
+      "tailwindcss": "^4",
+      "typescript": "^5"
+   },
+   "prettier": {
+      "plugins": [
+         "prettier-plugin-tailwindcss"
+      ],
+      "singleQuote": true,
+      "trailingComma": "none",
+      "tabWidth": 3,
+      "arrowParens": "avoid",
+      "bracketSameLine": true
+   }
 }

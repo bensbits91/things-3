@@ -4,17 +4,42 @@
    --background: #ffffff;
    --foreground: #171717;
 
-   /** Base colors */
+   /* 
    --bb-dark-a0: #000000;
    --bb-light-a0: #ffffff;
 
-   /** Theme primary colors */
    --bb-primary-a0: #97b9f7;
    --bb-primary-a10: #a4c1f8;
    --bb-primary-a20: #b0c8f9;
    --bb-primary-a30: #bbd0fa;
    --bb-primary-a40: #c7d7fb;
    --bb-primary-a50: #d2dffc;
+
+   --bb-surface-a0: #121212;
+   --bb-surface-a10: #282828;
+   --bb-surface-a20: #3f3f3f;
+   --bb-surface-a30: #575757;
+   --bb-surface-a40: #717171;
+   --bb-surface-a50: #8b8b8b;
+
+   --bb-surface-tonal-a0: #1e2025;
+   --bb-surface-tonal-a10: #333539;
+   --bb-surface-tonal-a20: #494b4f;
+   --bb-surface-tonal-a30: #606266;
+   --bb-surface-tonal-a40: #797a7e;
+   --bb-surface-tonal-a50: #929396; */
+
+   /** Base colors */
+   --bb-dark-a0: #000000;
+   --bb-light-a0: #ffffff;
+
+   /** Theme primary colors */
+   --bb-primary-a0: #68eee1;
+   --bb-primary-a10: #7ef0e4;
+   --bb-primary-a20: #92f2e8;
+   --bb-primary-a30: #a4f5eb;
+   --bb-primary-a40: #b5f6ee;
+   --bb-primary-a50: #c5f8f2;
 
    /** Theme surface colors */
    --bb-surface-a0: #121212;
@@ -25,12 +50,12 @@
    --bb-surface-a50: #8b8b8b;
 
    /** Theme tonal surface colors */
-   --bb-surface-tonal-a0: #1e2025;
-   --bb-surface-tonal-a10: #333539;
-   --bb-surface-tonal-a20: #494b4f;
-   --bb-surface-tonal-a30: #606266;
-   --bb-surface-tonal-a40: #797a7e;
-   --bb-surface-tonal-a50: #929396;
+   --bb-surface-tonal-a0: #1c2423;
+   --bb-surface-tonal-a10: #313838;
+   --bb-surface-tonal-a20: #474e4d;
+   --bb-surface-tonal-a30: #5f6564;
+   --bb-surface-tonal-a40: #787d7c;
+   --bb-surface-tonal-a50: #919595;
 
    /** Examples */
    .bg-primary {
