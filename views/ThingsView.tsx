@@ -1,9 +1,10 @@
 'use client';
 import { useState, useCallback } from 'react';
 import { useGetThingsByUser } from '@/hooks/things/useGetThingsByUser';
-import ThingsTable from '../components/things/ThingsTable';
-import ThingsGrid from '../components/things/ThingsGrid';
-import ThingModal from '../components/things/ThingModal';
+import ThingsViewToolbar from '@/components/things/ThingsViewToolbar';
+import ThingsTable from '@/components/things/ThingsTable';
+import ThingsGrid from '@/components/things/ThingsGrid';
+import ThingModal from '@/components/things/ThingModal';
 import { Thing } from '@/types/Thing';
 
 export default function ThingsView({ userUuid }: { userUuid: string }) {
@@ -18,8 +19,8 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       error
    } = useGetThingsByUser(userUuid);
 
-   const [view, setView] = useState<'table' | 'grid'>('grid');
-   const handleViewChange = (newView: 'table' | 'grid') => {
+   const [view, setView] = useState<'table' | 'grid' | 'list' | 'wall'>('grid');
+   const handleViewChange = (newView: 'table' | 'grid' | 'list' | 'wall') => {
       setView(newView);
    };
 
@@ -53,6 +54,7 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
 
    return (
       <>
+         <ThingsViewToolbar handleViewClick={handleViewChange} />
          {view === 'table' && (
             <ThingsTable things={things} handleRowClick={handleItemClick} />
          )}
