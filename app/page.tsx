@@ -6,7 +6,7 @@ export default async function Home() {
    if (!session) {
       return (
          <div>
-            <a href='/auth/login'>Log in</a>
+            <a href="/auth/login">Log in</a>
          </div>
       );
    }
@@ -31,7 +31,7 @@ export default async function Home() {
                )}
                {nickname || email}
             </p>
-            <a href='/auth/logout'>Log out</a>
+            <a href="/auth/logout">Log out</a>
          </div>
       </div>
    );

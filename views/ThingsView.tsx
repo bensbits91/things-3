@@ -5,6 +5,7 @@ import ThingsViewToolbar from '@/components/things/ThingsViewToolbar';
 import ThingsTable from '@/components/things/ThingsTable';
 import ThingsGrid from '@/components/things/ThingsGrid';
 import ThingModal from '@/components/things/ThingModal';
+import Loading from '@/components/loading/Loading';
 import { Thing } from '@/types/Thing';
 
 export default function ThingsView({ userUuid }: { userUuid: string }) {
@@ -38,7 +39,7 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       [things]
    );
 
-   if (isLoading) return <p>Loading...</p>;
+   if (isLoading) return <Loading />;
    if (isError) {
       console.error('Error fetching things:', error);
       return (
