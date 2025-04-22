@@ -4,6 +4,8 @@ import { useGetThingsByUser } from '@/hooks/things/useGetThingsByUser';
 import ThingsViewToolbar from '@/components/things/ThingsViewToolbar';
 import ThingsTable from '@/components/things/ThingsTable';
 import ThingsGrid from '@/components/things/ThingsGrid';
+import ThingsList from '@/components/things/ThingsList';
+import ThingsWall from '@/components/things/ThingsWall';
 import ThingModal from '@/components/things/ThingModal';
 import Loading from '@/components/loading/Loading';
 import { Thing } from '@/types/Thing';
@@ -57,10 +59,16 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       <>
          <ThingsViewToolbar handleViewClick={handleViewChange} />
          {view === 'table' && (
-            <ThingsTable things={things} handleRowClick={handleItemClick} />
+            <ThingsTable things={things} handleItemClick={handleItemClick} />
          )}
          {view === 'grid' && (
-            <ThingsGrid things={things} handleCardClick={handleItemClick} />
+            <ThingsGrid things={things} handleItemClick={handleItemClick} />
+         )}
+         {view === 'list' && (
+            <ThingsList things={things} handleItemClick={handleItemClick} />
+         )}
+         {view === 'wall' && (
+            <ThingsWall things={things} handleItemClick={handleItemClick} />
          )}
          {selectedThing && (
             <ThingModal

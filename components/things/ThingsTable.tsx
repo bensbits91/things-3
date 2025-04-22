@@ -11,13 +11,15 @@ import { Rating } from '@/components/inputs';
 import { truncateString } from '@/utils/truncateString';
 import { Thing } from '@/types/Thing';
 
+interface ThingsTableProps {
+   things: Thing[];
+   handleItemClick: (thingId: string) => void;
+}
+
 export default function ThingsTable({
    things,
-   handleRowClick
-}: {
-   things: Thing[];
-   handleRowClick: (thingId: string) => void;
-}) {
+   handleItemClick
+}: ThingsTableProps) {
    interface CellInfo<TData, TValue> {
       getValue: () => TValue;
    }
@@ -157,7 +159,7 @@ export default function ThingsTable({
                      key={row.id}
                      className="border-y-solid cursor-pointer border-t-2 border-b-0 border-transparent odd:bg-[var(--bb-surface-a10)] hover:border-b-2 hover:border-y-yellow-200"
                      onClick={() => {
-                        handleRowClick(row.original._id);
+                        handleItemClick(row.original._id);
                      }}>
                      {row.getVisibleCells().map(cell => (
                         <td key={cell.id} className="p-2">

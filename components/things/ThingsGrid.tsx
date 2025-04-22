@@ -5,13 +5,15 @@ import ThingInfoBar from './ThingInfoBar';
 import { truncateString } from '@/utils/truncateString';
 import { Thing } from '@/types/Thing';
 
+interface ThingsGridProps {
+   things: Thing[];
+   handleItemClick: (thingId: string) => void;
+}
+
 export default function ThingsGrid({
    things,
-   handleCardClick
-}: {
-   things: Thing[];
-   handleCardClick: (thingId: string) => void;
-}) {
+   handleItemClick
+}: ThingsGridProps) {
    if (!things || things.length === 0) {
       return <p>No things found</p>;
    }
@@ -43,7 +45,7 @@ export default function ThingsGrid({
                   <div
                      key={_id}
                      className="flex cursor-pointer flex-col items-center overflow-hidden rounded-lg border shadow-[-1px_4px_8px_0] shadow-black/70 transition-colors duration-300 hover:bg-[var(--bb-surface-a10)]"
-                     onClick={() => handleCardClick(_id)}>
+                     onClick={() => handleItemClick(_id)}>
                      {main_image_url && (
                         <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
                            <Image
