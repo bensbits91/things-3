@@ -1,9 +1,11 @@
+import { ReactNode } from 'react';
 import {
    useReactTable,
    ColumnDef,
    getCoreRowModel,
    getSortedRowModel,
-   getFilteredRowModel
+   getFilteredRowModel,
+   CellContext
 } from '@tanstack/react-table';
 import Image from 'next/image';
 import Th from './ThingsTableHeader';
@@ -24,16 +26,15 @@ export default function ThingsTable({
    things,
    handleItemClick
 }: ThingsTableProps) {
-   interface CellInfo<TData, TValue> {
-      getValue: () => TValue;
-   }
-
-   const columns: ColumnDef<Thing, any>[] = [
+   const columns: ColumnDef<
+      Thing,
+      string | unknown | number | Date | ReactNode
+   >[] = [
       {
          accessorKey: 'main_image_url',
          header: 'Image',
-         cell: (info: CellInfo<Thing, string>) => {
-            const imageUrl = info.getValue();
+         cell: (info: CellContext<Thing, unknown>) => {
+            const imageUrl = info.getValue() as string;
             return (
                <div className="relative h-12 w-12 overflow-hidden">
                   <Image
@@ -65,7 +66,7 @@ export default function ThingsTable({
          accessorKey: 'date',
          header: 'Date',
          cell: info => {
-            return getYear(info.getValue());
+            return getYear(info.getValue() as string | Date);
          }
       },
       {
@@ -74,7 +75,7 @@ export default function ThingsTable({
          cell: info => (
             <div className="flex items-center gap-2">
                <Rating
-                  rating={info.getValue()}
+                  rating={info.getValue() as number}
                   editable={false}
                   starSize="sm"
                />
@@ -88,15 +89,15 @@ export default function ThingsTable({
       {
          accessorKey: 'description',
          header: 'Description',
-         cell: (info: CellInfo<Thing, string>) => {
+         cell: (info: CellContext<Thing, unknown>) => {
             const { newString, wasTruncated } = truncateString(
-               info.getValue(),
+               info.getValue() as string,
                50
             );
             return (
                <>
                   {wasTruncated ? (
-                     <span title={info.getValue()}>{newString}</span>
+                     <span title={info.getValue() as string}>{newString}</span>
                   ) : (
                      <span>{newString}</span>
                   )}

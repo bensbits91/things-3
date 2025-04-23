@@ -3,8 +3,8 @@ import { auth0 } from '@/lib/auth0';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export function withAuth(Component: React.ComponentType<any>) {
-   return function ProtectedComponent(props: any) {
+export function withAuth<P extends React.Attributes>(Component: React.ComponentType<P>) {
+   return function ProtectedComponent(props: P) {
       const [isAuthenticated, setIsAuthenticated] = useState(false);
       const router = useRouter();
 
@@ -18,7 +18,7 @@ export function withAuth(Component: React.ComponentType<any>) {
             }
          }
          checkAuth();
-      }, []);
+      }, [router]);
 
       if (!isAuthenticated) {
          return <p>Loading...</p>;

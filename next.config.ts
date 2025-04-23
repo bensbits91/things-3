@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
             protocol: 'https',
             hostname: 'www.giantbomb.com',
             pathname: '/a/**'
+         },
+         {
+            protocol: 'https',
+            hostname: 's.gravatar.com',
+            pathname: '/**'
          }
       ]
    }
