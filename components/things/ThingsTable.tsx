@@ -26,10 +26,6 @@ export default function ThingsTable({
    things,
    handleItemClick
 }: ThingsTableProps) {
-   interface CellInfo<TValue> {
-      getValue: () => TValue;
-   }
-
    const columns: ColumnDef<
       Thing,
       string | unknown | number | Date | ReactNode
