@@ -3,31 +3,27 @@ import {
    ColumnDef,
    getCoreRowModel,
    getSortedRowModel,
-   getFilteredRowModel,
-   flexRender
+   getFilteredRowModel
 } from '@tanstack/react-table';
 import Image from 'next/image';
+import Th from './ThingsTableHeader';
+import Td from './ThingsTableCell';
 import { Rating } from '@/components/inputs';
 import { truncateString } from '@/utils/truncateString';
+import { getYear } from '@/utils/dateUtils';
+import { Thing } from '@/types/Thing';
 
-interface Thing {
-   _id: string;
-   name: string;
-   description: string;
-   main_image_url: string;
-   country: string;
-   date: string;
-   rating: number;
-   statusText: string;
+interface ThingsTableProps {
+   things: Thing[];
+   handleItemClick: (thingId: string) => void;
 }
+
+const colsToHideOnMobile = ['country', 'description', 'date'];
 
 export default function ThingsTable({
    things,
-   handleRowClick
-}: {
-   things: Thing[];
-   handleRowClick: (thingId: string) => void;
-}) {
+   handleItemClick
+}: ThingsTableProps) {
    interface CellInfo<TData, TValue> {
       getValue: () => TValue;
    }
@@ -67,19 +63,23 @@ export default function ThingsTable({
       },
       {
          accessorKey: 'date',
-         header: 'Date'
+         header: 'Date',
+         cell: info => {
+            return getYear(info.getValue());
+         }
       },
       {
          accessorKey: 'rating',
          header: 'Rating',
-         cell: info => {
-            const rating = info.getValue();
-            return (
-               <div className="flex items-center gap-2">
-                  <Rating rating={rating} editable={false} starSize="sm" />
-               </div>
-            );
-         }
+         cell: info => (
+            <div className="flex items-center gap-2">
+               <Rating
+                  rating={info.getValue()}
+                  editable={false}
+                  starSize="sm"
+               />
+            </div>
+         )
       },
       {
          accessorKey: 'statusText',
@@ -94,13 +94,13 @@ export default function ThingsTable({
                50
             );
             return (
-               <div>
+               <>
                   {wasTruncated ? (
                      <span title={info.getValue()}>{newString}</span>
                   ) : (
                      <span>{newString}</span>
                   )}
-               </div>
+               </>
             );
          }
       }
@@ -121,42 +121,11 @@ export default function ThingsTable({
                {table.getHeaderGroups().map(headerGroup => (
                   <tr key={headerGroup.id}>
                      {headerGroup.headers.map(header => (
-                        <th
-                           className={
-                              header.column.getCanSort()
-                                 ? 'cursor-pointer'
-                                 : 'align-top'
-                           }
-                           key={header.id}>
-                           <div
-                              onClick={header.column.getToggleSortingHandler()}>
-                              {flexRender(
-                                 header.column.columnDef.header,
-                                 header.getContext()
-                              )}
-                              {header.column.getIsSorted() === 'asc' && ' 🔼'}
-                              {header.column.getIsSorted() === 'desc' && ' 🔽'}
-                              {header.column.getCanSort() &&
-                                 !header.column.getIsSorted() &&
-                                 ' ⬍'}
-                           </div>
-                           {header.column.getCanFilter() && (
-                              <input
-                                 className="mt-2 w-full"
-                                 type="text"
-                                 value={
-                                    (header.column.getFilterValue() as string) ||
-                                    ''
-                                 }
-                                 onChange={e => {
-                                    header.column.setFilterValue(
-                                       e.target.value
-                                    );
-                                 }}
-                                 placeholder={`Filter ${header.column.columnDef.header}`}
-                              />
-                           )}
-                        </th>
+                        <Th
+                           key={header.id}
+                           header={header}
+                           colsToHideOnMobile={colsToHideOnMobile}
+                        />
                      ))}
                   </tr>
                ))}
@@ -167,15 +136,14 @@ export default function ThingsTable({
                      key={row.id}
                      className="border-y-solid cursor-pointer border-t-2 border-b-0 border-transparent odd:bg-[var(--bb-surface-a10)] hover:border-b-2 hover:border-y-yellow-200"
                      onClick={() => {
-                        handleRowClick(row.original._id);
+                        handleItemClick(row.original._id);
                      }}>
                      {row.getVisibleCells().map(cell => (
-                        <td key={cell.id} className="p-2">
-                           {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                           )}
-                        </td>
+                        <Td
+                           key={cell.id}
+                           cell={cell}
+                           colsToHideOnMobile={colsToHideOnMobile}
+                        />
                      ))}
                   </tr>
                ))}

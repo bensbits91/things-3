@@ -17,13 +17,15 @@ import { SuccessIcon, ChevronIcon } from '@/components/icons';
 
 // todo: show indicator for initial selected Item on load
 
+interface SelectComponentProps {
+   options?: object[];
+   initialSelection?: number;
+}
+
 export default function SelectComponent({
    options,
    initialSelection
-}: {
-   options?: object[];
-   initialSelection?: number;
-}) {
+}: SelectComponentProps) {
    const [isOpen, setIsOpen] = useState(false);
    const handleOpenChange = (open: boolean) => {
       setIsOpen(open);
@@ -36,10 +38,10 @@ export default function SelectComponent({
                const text = String(options[parseInt(optionKey)]);
                return (
                   <Item key={optionKey} value={optionKey}>
-                     <div className='flex items-center gap-2 cursor-pointer hover:bg-[var(--bb-surface-a10)] px-4 py-1'>
+                     <div className="flex cursor-pointer items-center gap-2 px-4 py-1 hover:bg-[var(--bb-surface-a10)]">
                         <ItemText>{text}</ItemText>
                         <ItemIndicator>
-                           <div className='h-4 w-4'>
+                           <div className="h-4 w-4">
                               <SuccessIcon />
                            </div>
                         </ItemIndicator>
@@ -52,7 +54,7 @@ export default function SelectComponent({
 
    return (
       <Select onOpenChange={handleOpenChange}>
-         <Trigger className='flex cursor-pointer'>
+         <Trigger className="flex cursor-pointer">
             <Value
                placeholder={String(
                   options && initialSelection
@@ -61,14 +63,16 @@ export default function SelectComponent({
                )}
             />
             <Icon asChild>
-               <div className='h-6 w-6'>
+               <div className="h-6 w-6">
                   <ChevronIcon direction={isOpen ? 'up' : 'down'} />
                </div>
             </Icon>
          </Trigger>
 
          <Portal>
-            <Content position='popper' className='bg-[var(--bb-surface-a20)] py-2'>
+            <Content
+               position="popper"
+               className="z-30 bg-[var(--bb-surface-a20)] py-2">
                <ScrollUpButton />
                <Viewport>
                   <Items />

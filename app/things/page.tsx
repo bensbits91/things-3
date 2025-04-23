@@ -1,5 +1,5 @@
 import { auth0 } from '@/lib/auth0';
-import ThingsView from '@/components/things/ThingsView';
+import ThingsView from '@/views/ThingsView';
 
 export default async function ThingsPage() {
    const session = await auth0.getSession();

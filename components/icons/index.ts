@@ -11,6 +11,11 @@ export { default as EditIcon } from './EditIcon';
 export { default as RadioButtonIcon } from './RadioButtonIcon';
 export { default as RepeatIcon } from './RepeatIcon';
 
+export { default as TableIcon } from './TableIcon';
+export { default as GridIcon } from './GridIcon';
+export { default as WallIcon } from './WallIcon';
+export { default as ListIcon } from './ListIcon';
+
 export { default as WarnIcon } from './WarnIcon';
 export { default as SuccessIcon } from './SuccessIcon';
 export { default as ErrorIcon } from './ErrorIcon';
