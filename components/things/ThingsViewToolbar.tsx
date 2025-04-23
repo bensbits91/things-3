@@ -6,13 +6,16 @@ import {
    ToggleItem
 } from '@radix-ui/react-toolbar';
 import { TableIcon, GridIcon, ListIcon, WallIcon } from '@/components/icons';
+import clsx from 'clsx';
 
 interface ThingsViewToolbarProps {
    handleViewClick: (newView: 'table' | 'grid' | 'list' | 'wall') => void;
+   selectedView: 'table' | 'grid' | 'list' | 'wall';
 }
 
 export default function ThingsViewToolbar({
-   handleViewClick
+   handleViewClick,
+   selectedView
 }: ThingsViewToolbarProps) {
    return (
       <Toolbar
@@ -25,7 +28,10 @@ export default function ThingsViewToolbar({
             <ToggleItem asChild value="table" aria-label="Table view">
                <Button
                   onClick={() => handleViewClick('table')}
-                  className="h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500"
+                  className={clsx(
+                     'h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500',
+                     selectedView === 'table' && 'text-yellow-500'
+                  )}
                   title="Table view">
                   <TableIcon />
                </Button>
@@ -33,7 +39,10 @@ export default function ThingsViewToolbar({
             <ToggleItem asChild value="grid" aria-label="Grid view">
                <Button
                   onClick={() => handleViewClick('grid')}
-                  className="h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500"
+                  className={clsx(
+                     'h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500',
+                     selectedView === 'grid' && 'text-yellow-500'
+                  )}
                   title="Grid view">
                   <GridIcon />
                </Button>
@@ -41,7 +50,10 @@ export default function ThingsViewToolbar({
             <ToggleItem asChild value="list" aria-label="List view">
                <Button
                   onClick={() => handleViewClick('list')}
-                  className="h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500"
+                  className={clsx(
+                     'h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500',
+                     selectedView === 'list' && 'text-yellow-500'
+                  )}
                   title="List view">
                   <ListIcon />
                </Button>
@@ -49,7 +61,10 @@ export default function ThingsViewToolbar({
             <ToggleItem asChild value="wall" aria-label="Wall view">
                <Button
                   onClick={() => handleViewClick('wall')}
-                  className="h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500"
+                  className={clsx(
+                     'h-4 w-4 cursor-pointer rounded-md hover:text-yellow-500',
+                     selectedView === 'wall' && 'text-yellow-500'
+                  )}
                   title="Wall view">
                   <WallIcon />
                </Button>

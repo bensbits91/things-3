@@ -68,7 +68,7 @@ export default function SelectComponent({
          </Trigger>
 
          <Portal>
-            <Content position='popper' className='bg-[var(--bb-surface-a20)] py-2'>
+            <Content position='popper' className='bg-[var(--bb-surface-a20)] py-2 z-30'>
                <ScrollUpButton />
                <Viewport>
                   <Items />

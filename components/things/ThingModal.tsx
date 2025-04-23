@@ -41,22 +41,24 @@ export default function ThingModal({
    return (
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
          <Overlay className="fixed inset-0 bg-black/30" />
-         <Content className="fixed top-16 right-4 bottom-4 left-4 overflow-scroll rounded-lg bg-[var(--modal-bg)] p-6 shadow-lg">
+         <Content className="fixed top-4 right-4 bottom-4 left-4 z-20 overflow-scroll rounded-lg bg-[var(--modal-bg)] p-6 shadow-lg md:top-16">
             <Close
                className="absolute top-4 right-4 h-4 w-4 cursor-pointer transition duration-500 ease-in-out hover:text-[yellow]"
                aria-label="Close"
                onClick={() => onOpenChange(false)}>
                <CloseIcon />
             </Close>
-            <div className="flex h-full justify-between gap-12 p-4">
-               <div className="relative h-full w-[500px] overflow-hidden">
-                  {main_image_url && <Image
-                     width={500}
-                     height={500}
-                     //  sizes='500px' // todo: need response? sizes="(max-width: 768px) 100vw, 50px" // Full width on small screens, 50px on larger screens
-                     src={main_image_url}
-                     alt={name}
-                  />}
+            <div className="flex h-full flex-col justify-between gap-4 md:gap-12 pt-4 md:p-4 md:flex-row">
+               <div className="relative h-full overflow-hidden md:w-[500px]">
+                  {main_image_url && (
+                     <Image
+                        width={500}
+                        height={500}
+                        sizes="(max-width: 768px) 100vw, 500px" // todo: need response? sizes="(max-width: 768px) 100vw, 50px" // Full width on small screens, 50px on larger screens
+                        src={main_image_url}
+                        alt={name}
+                     />
+                  )}
                </div>
                <div className="flex w-full flex-col gap-6">
                   <Title className="text-4xl">{name}</Title>

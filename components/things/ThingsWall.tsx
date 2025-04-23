@@ -19,7 +19,7 @@ export default function ThingsWall({
    }
    return (
       <Section>
-         <div className="grid max-w-xl grid-cols-[repeat(auto-fit,minmax(80px,1fr))] gap-1 md:max-w-3xl md:auto-cols-min lg:max-w-5xl">
+         <div className="grid max-w-screen grid-cols-[repeat(auto-fit,minmax(80px,1fr))] gap-0 auto-cols-min md:grid-cols-[repeat(auto-fit,minmax(120px,1fr))] lg:max-w-5xl">
             {things.map(thing => {
                const { _id, name, main_image_url } = thing;
                if (!main_image_url) {
@@ -32,7 +32,7 @@ export default function ThingsWall({
                      className="cursor-pointer"
                      onClick={() => handleItemClick(_id)}>
                      {main_image_url && (
-                        <div className="relative h-20 w-10 overflow-hidden md:h-40 md:w-20">
+                        <div className="relative h-40 w-20 overflow-hidden md:h-60 md:w-30">
                            <Image
                               src={main_image_url}
                               alt={name}

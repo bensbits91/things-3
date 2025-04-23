@@ -22,7 +22,7 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       error
    } = useGetThingsByUser(userUuid);
 
-   const [view, setView] = useState<'table' | 'grid' | 'list' | 'wall'>('grid');
+   const [view, setView] = useState<'table' | 'grid' | 'list' | 'wall'>('wall');
    const handleViewChange = (newView: 'table' | 'grid' | 'list' | 'wall') => {
       setView(newView);
    };
@@ -57,7 +57,10 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
 
    return (
       <>
-         <ThingsViewToolbar handleViewClick={handleViewChange} />
+         <ThingsViewToolbar
+            handleViewClick={handleViewChange}
+            selectedView={view}
+         />
          {view === 'table' && (
             <ThingsTable things={things} handleItemClick={handleItemClick} />
          )}
