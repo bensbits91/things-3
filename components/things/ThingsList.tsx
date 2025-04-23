@@ -58,23 +58,23 @@ export default function ThingsList({
                         </div>
                      )}
                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                           {main_image_url && (
+                              <div className="relative h-10 w-10 overflow-hidden rounded-[50%] md:hidden md:h-20 md:w-20">
+                                 <Image
+                                    src={main_image_url}
+                                    alt={name}
+                                    fill
+                                    sizes="(max-width: 768px) 40px, 50px"
+                                    style={{ objectFit: 'cover' }}
+                                    loading="lazy"
+                                    className="transition-transform duration-300 md:hover:scale-105"
+                                 />
+                              </div>
+                           )}
+                           <h3 className="text-lg">{name}</h3>
+                        </div>
                         <div className="flex flex-col gap-2 md:flex-row md:items-end md:gap-8">
-                           <div className="flex items-center gap-2">
-                              {main_image_url && (
-                                 <div className="relative h-10 w-10 overflow-hidden rounded-[50%] md:hidden md:h-20 md:w-20">
-                                    <Image
-                                       src={main_image_url}
-                                       alt={name}
-                                       fill
-                                       sizes="(max-width: 768px) 40px, 50px"
-                                       style={{ objectFit: 'cover' }}
-                                       loading="lazy"
-                                       className="transition-transform duration-300 md:hover:scale-105"
-                                    />
-                                 </div>
-                              )}
-                              <h3 className="text-lg">{name}</h3>
-                           </div>
                            {(hasRating || hasStatusText) && (
                               <div className="flex items-center gap-4">
                                  {hasStatusText && (
