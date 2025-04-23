@@ -30,9 +30,7 @@ export default function ThingsGrid({
                   statusText,
                   type,
                   date,
-                  country,
-                  language,
-                  genres
+                  country
                } = thing;
                if (!name) {
                   return null;

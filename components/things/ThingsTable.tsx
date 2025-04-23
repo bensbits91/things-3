@@ -3,19 +3,22 @@ import {
    ColumnDef,
    getCoreRowModel,
    getSortedRowModel,
-   getFilteredRowModel,
-   flexRender
+   getFilteredRowModel
 } from '@tanstack/react-table';
 import Image from 'next/image';
+import Th from './ThingsTableHeader';
+import Td from './ThingsTableCell';
 import { Rating } from '@/components/inputs';
 import { truncateString } from '@/utils/truncateString';
+import { getYear } from '@/utils/dateUtils';
 import { Thing } from '@/types/Thing';
-import clsx from 'clsx';
 
 interface ThingsTableProps {
    things: Thing[];
    handleItemClick: (thingId: string) => void;
 }
+
+const colsToHideOnMobile = ['country', 'description', 'date'];
 
 export default function ThingsTable({
    things,
@@ -56,26 +59,27 @@ export default function ThingsTable({
       },
       {
          accessorKey: 'country',
-         header: 'Country',
-         cell: info => {
-            return <div className="hidden md:block">{info.getValue()}</div>;
-         }
+         header: 'Country'
       },
       {
          accessorKey: 'date',
-         header: 'Date'
+         header: 'Date',
+         cell: info => {
+            return getYear(info.getValue());
+         }
       },
       {
          accessorKey: 'rating',
          header: 'Rating',
-         cell: info => {
-            const rating = info.getValue();
-            return (
-               <div className="flex items-center gap-2">
-                  <Rating rating={rating} editable={false} starSize="sm" />
-               </div>
-            );
-         }
+         cell: info => (
+            <div className="flex items-center gap-2">
+               <Rating
+                  rating={info.getValue()}
+                  editable={false}
+                  starSize="sm"
+               />
+            </div>
+         )
       },
       {
          accessorKey: 'statusText',
@@ -90,13 +94,13 @@ export default function ThingsTable({
                50
             );
             return (
-               <div>
+               <>
                   {wasTruncated ? (
                      <span title={info.getValue()}>{newString}</span>
                   ) : (
                      <span>{newString}</span>
                   )}
-               </div>
+               </>
             );
          }
       }
@@ -110,61 +114,19 @@ export default function ThingsTable({
       getFilteredRowModel: getFilteredRowModel() // needed for client-side filtering
    });
 
-   const colsToHideOnMobile = ['country', 'description', 'date'];
-
    return (
       <div>
          <table>
             <thead>
                {table.getHeaderGroups().map(headerGroup => (
                   <tr key={headerGroup.id}>
-                     {headerGroup.headers.map(header => {
-                        console.log('Header:', header);
-                        const hideOnMobile = colsToHideOnMobile.includes(
-                           header.id
-                        );
-                        return (
-                           <th
-                              className={clsx(
-                                 header.column.getCanSort()
-                                    ? 'cursor-pointer align-top'
-                                    : 'align-top',
-                                 hideOnMobile && 'hidden md:table-cell'
-                              )}
-                              key={header.id}>
-                              <div
-                                 onClick={header.column.getToggleSortingHandler()}>
-                                 {flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                 )}
-                                 {header.column.getIsSorted() === 'asc' &&
-                                    ' 🔼'}
-                                 {header.column.getIsSorted() === 'desc' &&
-                                    ' 🔽'}
-                                 {header.column.getCanSort() &&
-                                    !header.column.getIsSorted() &&
-                                    ' ⬍'}
-                              </div>
-                              {header.column.getCanFilter() && (
-                                 <input
-                                    className="mt-2 w-full"
-                                    type="text"
-                                    value={
-                                       (header.column.getFilterValue() as string) ||
-                                       ''
-                                    }
-                                    onChange={e => {
-                                       header.column.setFilterValue(
-                                          e.target.value
-                                       );
-                                    }}
-                                    placeholder={`Filter ${header.column.columnDef.header}`}
-                                 />
-                              )}
-                           </th>
-                        );
-                     })}
+                     {headerGroup.headers.map(header => (
+                        <Th
+                           key={header.id}
+                           header={header}
+                           colsToHideOnMobile={colsToHideOnMobile}
+                        />
+                     ))}
                   </tr>
                ))}
             </thead>
@@ -176,28 +138,13 @@ export default function ThingsTable({
                      onClick={() => {
                         handleItemClick(row.original._id);
                      }}>
-                     {row.getVisibleCells().map(cell => {
-                        console.log(
-                           'bb ~ ThingsTable.tsx:180 ~ {row.getVisibleCells ~ cell:',
-                           cell
-                        );
-                        const hideOnMobile = colsToHideOnMobile.includes(
-                           cell.column.id
-                        );
-                        return (
-                           <td
-                              key={cell.id}
-                              className={clsx(
-                                 'p-2',
-                                 hideOnMobile && 'hidden md:table-cell'
-                              )}>
-                              {flexRender(
-                                 cell.column.columnDef.cell,
-                                 cell.getContext()
-                              )}
-                           </td>
-                        );
-                     })}
+                     {row.getVisibleCells().map(cell => (
+                        <Td
+                           key={cell.id}
+                           cell={cell}
+                           colsToHideOnMobile={colsToHideOnMobile}
+                        />
+                     ))}
                   </tr>
                ))}
             </tbody>

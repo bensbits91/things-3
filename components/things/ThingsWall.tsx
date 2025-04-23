@@ -1,8 +1,5 @@
 import Image from 'next/image';
 import { Section } from '@/components/layout';
-import { Rating } from '@/components/inputs';
-import ThingInfoBar from './ThingInfoBar';
-import { truncateString } from '@/utils/truncateString';
 import { Thing } from '@/types/Thing';
 
 interface ThingsWallProps {

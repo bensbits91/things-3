@@ -10,7 +10,11 @@ import ThingModal from '@/components/things/ThingModal';
 import Loading from '@/components/loading/Loading';
 import { Thing } from '@/types/Thing';
 
-export default function ThingsView({ userUuid }: { userUuid: string }) {
+interface ThingsViewProps {
+   userUuid: string;
+}
+
+export default function ThingsView({ userUuid }: ThingsViewProps) {
    if (!userUuid) {
       throw new Error('userUuid is required');
    }
@@ -22,7 +26,7 @@ export default function ThingsView({ userUuid }: { userUuid: string }) {
       error
    } = useGetThingsByUser(userUuid);
 
-   const [view, setView] = useState<'table' | 'grid' | 'list' | 'wall'>('wall');
+   const [view, setView] = useState<'table' | 'grid' | 'list' | 'wall'>('table');
    const handleViewChange = (newView: 'table' | 'grid' | 'list' | 'wall') => {
       setView(newView);
    };
