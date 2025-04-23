@@ -1,26 +1,26 @@
-import { NavigationMenu, List, Item, Link } from '@radix-ui/react-navigation-menu';
-import { FC } from 'react';
+import {
+   NavigationMenu,
+   List,
+   Item,
+   Link
+} from '@radix-ui/react-navigation-menu';
 
-type NavMenuProps = {};
-
-const NavMenu: FC<NavMenuProps> = () => {
+export default function NavMenu() {
    return (
       <NavigationMenu
-         aria-label='Main navigation'
-         className='fixed top-0 left-0 right-0 shadow-md z-10 border-b-1 bg-black'>
-         <List className='flex items-center justify-end gap-8 h-12 px-4'>
+         aria-label="Main navigation"
+         className="fixed top-0 right-0 left-0 z-10 border-b-1 bg-black shadow-md">
+         <List className="flex h-12 items-center justify-end gap-8 px-4">
             <Item>
-               <Link href='/'>Home</Link>
+               <Link href="/">Home</Link>
             </Item>
             <Item>
-               <Link href='/things'>My Things</Link>
+               <Link href="/things">My Things</Link>
             </Item>
             <Item>
-               <Link href='/search'>Search</Link>
+               <Link href="/search">Search</Link>
             </Item>
          </List>
       </NavigationMenu>
    );
-};
-
-export default NavMenu;
+}

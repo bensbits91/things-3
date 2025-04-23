@@ -30,9 +30,7 @@ export default function ThingsList({
                   statusText,
                   type,
                   date,
-                  country,
-                  language,
-                  genres
+                  country
                } = thing;
                if (!name) {
                   return null;
