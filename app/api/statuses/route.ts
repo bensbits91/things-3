@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getStatusMap } from '@/services/StatusService';
 
 export async function GET() {
-try {
+   try {
       const statuses = await getStatusMap();
       return NextResponse.json(statuses, { status: 200 });
    } catch (error) {

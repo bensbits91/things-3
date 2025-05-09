@@ -54,7 +54,7 @@ export default function ThingModal({
                      <Image
                         width={500}
                         height={500}
-                        sizes="(max-width: 768px) 100vw, 500px" // todo: need response? sizes="(max-width: 768px) 100vw, 50px" // Full width on small screens, 50px on larger screens
+                        sizes="(max-width: 768px) 100vw, 500px"
                         src={main_image_url}
                         alt={name}
                      />
