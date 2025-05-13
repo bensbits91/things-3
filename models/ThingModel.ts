@@ -1,5 +1,6 @@
 import { Schema, Model, model, models, Document, Types } from 'mongoose';
-import { getStatusMap } from '@/services/StatusService';
+import { Detail } from '@/types/Detail';
+import { mapThingDocumentToThing } from '@/utils/thingTransform';
 
 export interface ThingDocument extends Document {
    user_uuid: string;
@@ -16,18 +17,33 @@ export interface ThingDocument extends Document {
    updatedAt: Date;
 }
 
-export interface CreateThingData {
-   user_uuid: string;
-   name: string;
-   detail_id?: Types.ObjectId;
-   rating?: number;
-   status?: number;
-   times?: number;
-   tags?: Types.ObjectId[];
-   review?: string;
-   notes?: string;
-   is_soft_deleted?: boolean;
-}
+export type AggregatedThing = ThingDocument & {
+   detailName?: string;
+   type?: string;
+   main_image_url?: string;
+   statusText?: string;
+   genres?: string[];
+   country?: string;
+   date?: Date;
+   description?: string;
+   people?: string[];
+   language?: string;
+   details?: Detail[];
+   external_id?: string;
+};
+
+export type CreateThingData = Pick<
+   ThingDocument,
+   | 'user_uuid'
+   | 'name'
+   | 'detail_id'
+   | 'rating'
+   | 'status'
+   | 'times'
+   | 'tags'
+   | 'review'
+   | 'notes'
+>;
 
 const ThingSchema = new Schema<ThingDocument>(
    {
@@ -76,58 +92,28 @@ ThingSchema.statics.createThing = async function (
 
 ThingSchema.statics.getThingsByUser = async function (
    userUuid: string
-): Promise<ThingDocument[]> {
+): Promise<AggregatedThing[]> {
    if (!userUuid) {
-      throw new Error('userUuid is required');
+      throw new Error('userUuid is required to fetch Things for a user.');
    }
-   const statusMap = await getStatusMap();
-   // console.log('bb ~ ThingModel.ts:85 ~ statusMap:', statusMap);
-   const mapStatusToText = (status: number, type: string) => statusMap[type][status];
 
-   const things = await this.aggregate([
+   const things = await this.aggregate<AggregatedThing>([
       { $match: { user_uuid: userUuid } },
       {
          $lookup: {
-            from: 'details', // Name of the collection to join
-            localField: 'detail_id', // Field in "things" collection
-            foreignField: '_id', // Field in "details" collection
-            as: 'details' // Output array field
+            from: 'details',
+            localField: 'detail_id',
+            foreignField: '_id',
+            as: 'details'
          }
       }
-   ]).then(results =>
-      results.map(thing => {
-         if (thing.details && thing.details.length > 0) {
-            const detail = thing.details[0];
-            const {
-               name,
-               type,
-               external_id,
-               country,
-               date,
-               description,
-               genres,
-               language,
-               main_image_url,
-               people
-            } = detail;
+   ]);
 
-            thing.detailName = name;
-            thing.type = type;
-            thing.external_id = external_id;
-            thing.country = country;
-            thing.date = date;
-            thing.description = description;
-            thing.genres = genres;
-            thing.language = language;
-            thing.main_image_url = main_image_url;
-            thing.people = people;
-            thing.statusText = mapStatusToText(thing.status, type);
-         }
-         return thing;
-      })
+   const transformedThings = await Promise.all(
+      things.map(mapThingDocumentToThing)
    );
 
-   return things;
+   return transformedThings;
 };
 
 export interface ThingModel extends Model<ThingDocument> {
