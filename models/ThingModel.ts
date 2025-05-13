@@ -6,6 +6,9 @@ export interface ThingDocument extends Document {
    user_uuid: string;
    name: string;
    detail_id?: Types.ObjectId;
+   description?: string;
+   country?: string;
+   date?: Date;
    rating: number;
    status: number;
    times: number;

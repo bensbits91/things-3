@@ -3,7 +3,7 @@ import { getYear } from '@/utils/dateUtils';
 
 interface ThingInfoBarProps {
    type?: string;
-   date?: string;
+   date?: Date | string;
    country?: string;
    language?: string;
    genres?: string[];
