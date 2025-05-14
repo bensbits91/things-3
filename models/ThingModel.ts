@@ -48,6 +48,10 @@ export type CreateThingData = Pick<
    | 'notes'
 >;
 
+export type UpdateThingData = Partial<Omit<ThingDocument, '_id'>> & {
+   _id: string;
+};
+
 const ThingSchema = new Schema<ThingDocument>(
    {
       user_uuid: {
@@ -93,6 +97,17 @@ ThingSchema.statics.createThing = async function (
    return thing.save();
 };
 
+ThingSchema.statics.updateThing = async function (
+   thingData: UpdateThingData
+): Promise<ThingDocument | null> {
+   const { _id, ...updates } = thingData;
+
+   return this.findByIdAndUpdate(_id, updates, {
+      new: true, // Return the updated document
+      runValidators: true // Ensure validation rules are applied
+   });
+};
+
 ThingSchema.statics.getThingsByUser = async function (
    userUuid: string
 ): Promise<AggregatedThing[]> {
@@ -122,6 +137,7 @@ ThingSchema.statics.getThingsByUser = async function (
 export interface ThingModel extends Model<ThingDocument> {
    createThing(thingData: CreateThingData): Promise<ThingDocument>;
    getThingsByUser(userUuid: string): Promise<ThingDocument[]>;
+   updateThing(thingData: UpdateThingData): Promise<ThingDocument>;
 }
 
 export const Thing = (models?.Thing ||

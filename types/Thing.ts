@@ -24,4 +24,6 @@ export type CreateThingData = Pick<
    | 'notes'
 >;
 
-export type UpdateThingData = Partial<CreateThingData>;
+export type UpdateThingData = Partial<CreateThingData> & {
+   _id: string;
+};

@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import {
    Dialog,
    Overlay,
@@ -14,28 +15,38 @@ import { Thing } from '@/types/Thing';
 
 interface ThingModalProps {
    thing: Thing | null | undefined;
+   userUuid: string;
    isOpen: boolean;
    onOpenChange: (open: boolean) => void;
 }
 
 export default function ThingModal({
    thing,
+   userUuid,
    isOpen,
    onOpenChange
 }: ThingModalProps) {
+   const queryClient = useQueryClient();
+
    if (!thing) return null;
+
+   // Get the updated Thing from the cache
+   const cachedThing = queryClient
+      .getQueryData<Thing[]>(['things', userUuid])
+      ?.find(t => t._id === thing._id);
+
    const {
       name,
       main_image_url,
       description,
-      status,
-      times,
+      // status,
+      // times,
       type,
       date,
       language,
       country,
-      genres,
-      rating
+      genres
+      // rating
    } = thing;
 
    return (
@@ -48,7 +59,7 @@ export default function ThingModal({
                onClick={() => onOpenChange(false)}>
                <CloseIcon />
             </Close>
-            <div className="flex h-full flex-col justify-between gap-4 md:gap-12 pt-4 md:p-4 md:flex-row">
+            <div className="flex h-full flex-col justify-between gap-4 pt-4 md:flex-row md:gap-12 md:p-4">
                <div className="relative h-full overflow-hidden md:w-[500px]">
                   {main_image_url && (
                      <Image
@@ -63,10 +74,8 @@ export default function ThingModal({
                <div className="flex w-full flex-col gap-6">
                   <Title className="text-4xl">{name}</Title>
                   <ThingModalToolbar
-                     status={status}
-                     type={type}
-                     times={times}
-                     rating={rating}
+                     thing={cachedThing || thing}
+                     userUuid={userUuid}
                   />
                   <ThingInfoBar
                      type={type}
