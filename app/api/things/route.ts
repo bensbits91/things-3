@@ -39,38 +39,6 @@ export async function POST(req: Request) {
    }
 }
 
-// export async function PATCH(req: Request) {
-//    try {
-//       const body = await req.json(); // Parse the JSON body from the request
-//       const { _id, ...updates } = body; // Extract the ID and other fields
-
-//       if (!_id) {
-//          return NextResponse.json(
-//             { error: '_id is required' },
-//             { status: 400 }
-//          );
-//       }
-
-//       const updatedThing = await updateThing({ _id, ...updates }); // Call the service to update the "thing"
-
-//       if (!updatedThing) {
-//          return NextResponse.json(
-//             { error: 'Thing not found' },
-//             { status: 404 }
-//          );
-//       }
-
-//       return NextResponse.json(updatedThing, { status: 200 }); // Return the updated "thing"
-//    } catch (error) {
-//       console.error('Error updating thing:', error);
-//       return NextResponse.json(
-//          { error: 'Failed to update thing' },
-//          { status: 500 }
-//       );
-//    }
-// }
-
-// Handle unsupported methods
 export function OPTIONS() {
    return NextResponse.json(null, {
       headers: {
