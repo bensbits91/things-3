@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { updateThing } from '@/services/things';
 
-export async function PATCH(req: Request, context: { params: { id: string } }) {
-   const { id } = context.params; // Access params from the context object
+export async function PATCH(
+   req: Request,
+   { params }: { params: { id: string } }
+) {
+   const { id } = params; // Access params from the context object
 
    try {
       const body = await req.json(); // Parse the JSON body from the request
