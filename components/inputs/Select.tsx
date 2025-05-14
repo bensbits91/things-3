@@ -20,11 +20,13 @@ import { SuccessIcon, ChevronIcon } from '@/components/icons';
 interface SelectComponentProps {
    options?: object[];
    initialSelection?: number;
+   handleEdit?: (value: string) => void;
 }
 
 export default function SelectComponent({
    options,
-   initialSelection
+   initialSelection,
+   handleEdit
 }: SelectComponentProps) {
    const [isOpen, setIsOpen] = useState(false);
    const handleOpenChange = (open: boolean) => {
@@ -53,8 +55,8 @@ export default function SelectComponent({
    );
 
    return (
-      <Select onOpenChange={handleOpenChange}>
-         <Trigger className="flex cursor-pointer">
+      <Select onOpenChange={handleOpenChange} onValueChange={handleEdit} value={String(initialSelection)}>
+         <Trigger className="flex cursor-pointer focus-visible:outline-none">
             <Value
                placeholder={String(
                   options && initialSelection

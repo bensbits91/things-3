@@ -1,6 +1,6 @@
 'use client';
 import { useState, useCallback } from 'react';
-import { useGetThingsByUser } from '@/hooks/things/useGetThingsByUser';
+import { useGetThingsByUser } from '@/hooks/things';
 import ThingsViewToolbar from '@/components/things/ThingsViewToolbar';
 import ThingsTable from '@/components/things/ThingsTable';
 import ThingsGrid from '@/components/things/ThingsGrid';
@@ -26,7 +26,9 @@ export default function ThingsView({ userUuid }: ThingsViewProps) {
       error
    } = useGetThingsByUser(userUuid);
 
-   const [view, setView] = useState<'table' | 'grid' | 'list' | 'wall'>('table');
+   const [view, setView] = useState<'table' | 'grid' | 'list' | 'wall'>(
+      'table'
+   );
    const handleViewChange = (newView: 'table' | 'grid' | 'list' | 'wall') => {
       setView(newView);
    };
@@ -80,6 +82,7 @@ export default function ThingsView({ userUuid }: ThingsViewProps) {
          {selectedThing && (
             <ThingModal
                thing={selectedThing}
+               userUuid={userUuid}
                isOpen={!!selectedThing}
                onOpenChange={open => {
                   if (!open) {
