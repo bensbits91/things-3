@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server';
 import { updateThing } from '@/services/things';
+type RouteHandlerContext<T> = {
+   params: T;
+};
 
 export async function PATCH(
    req: Request,
-   { params }: { params: { id: string } }
+   context: RouteHandlerContext<{ id: string }>
 ) {
-   const { id } = params; // Access params from the context object
+   const { id } = context.params; // Access params from the context object
 
    try {
       const body = await req.json(); // Parse the JSON body from the request
