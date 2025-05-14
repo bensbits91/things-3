@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server';
 import { updateThing } from '@/services/things';
 
-export async function PATCH(
-   req: Request,
-   { params }: { params: { id: string } }
-) {
-   const { id } = params; // Access the dynamic route parameter
+export async function PATCH(req: Request, context: { params: { id: string } }) {
+   const { id } = context.params; // Access the dynamic route parameter
 
    try {
       const body = await req.json(); // Parse the JSON body from the request
