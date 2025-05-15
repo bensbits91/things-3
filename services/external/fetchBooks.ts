@@ -13,12 +13,12 @@ export default async function fetchBooks(term: string) {
    try {
       const response = await fetch(url, options);
       if (!response.ok) {
-         throw new Error(`Failed to fetch video games: ${response.statusText}`);
+         throw new Error(`Failed to fetch books: ${response.statusText}`);
       }
       const data = await response.json();
       return normalizeGoogleBooksData(data);
    } catch (error) {
-      console.error('Error fetching video games:', error);
+      console.error('Error fetching books:', error);
       throw error;
    }
 }
