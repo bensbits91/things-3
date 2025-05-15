@@ -1,12 +1,12 @@
 import { auth0 } from '@/lib/auth0';
-import ThingsView from '@/views/ThingsView';
+import { ThingsView } from '@/views';
 
 export default async function ThingsPage() {
    const session = await auth0.getSession();
    if (!session) {
       return (
          <div>
-            <a href='/auth/login'>Log in</a>
+            <a href="/auth/login">Log in</a>
          </div>
       );
    }

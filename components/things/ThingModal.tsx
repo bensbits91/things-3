@@ -12,16 +12,19 @@ import { CloseIcon } from '@/components/icons';
 import ThingModalToolbar from './ThingModalToolbar';
 import ThingInfoBar from './ThingInfoBar';
 import { Thing } from '@/types/Thing';
+import { SearchResult } from '@/types/Search';
 
 interface ThingModalProps {
-   thing: Thing | null | undefined;
-   userUuid: string;
+   thing: Thing | SearchResult | null | undefined;
+   isSearch?: boolean;
+   userUuid?: string;
    isOpen: boolean;
    onOpenChange: (open: boolean) => void;
 }
 
 export default function ThingModal({
    thing,
+   isSearch = false,
    userUuid,
    isOpen,
    onOpenChange
@@ -30,10 +33,18 @@ export default function ThingModal({
 
    if (!thing) return null;
 
+   const cachedData = queryClient.getQueryData<SearchResult[]>([
+      'search',
+      'current'
+   ]);
+   console.log('Cached data for [search, current]:', cachedData);
+
    // Get the updated Thing from the cache
-   const cachedThing = queryClient
-      .getQueryData<Thing[]>(['things', userUuid])
-      ?.find(t => t._id === thing._id);
+   const cachedThing = isSearch
+      ? null // currntly not using cached data for search (might need when saving to user Things)
+      : queryClient
+           .getQueryData<Thing[]>(['things', userUuid])
+           ?.find(t => '_id' in thing && t._id === thing._id);
 
    const {
       name,
@@ -73,10 +84,12 @@ export default function ThingModal({
                </div>
                <div className="flex w-full flex-col gap-6">
                   <Title className="text-4xl">{name}</Title>
-                  <ThingModalToolbar
-                     thing={cachedThing || thing}
-                     userUuid={userUuid}
-                  />
+                  {!isSearch && (
+                     <ThingModalToolbar
+                        thing={(cachedThing || thing) as Thing}
+                        userUuid={userUuid || ''}
+                     />
+                  )}
                   <ThingInfoBar
                      type={type}
                      date={date}

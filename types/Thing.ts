@@ -1,4 +1,5 @@
-import { ThingDocument } from '@/models/ThingModel';
+import { ThingDocument, CreateThingData, UpdateThingData } from '@/models/ThingModel';
+
 export type Thing = Omit<
    ThingDocument,
    'detail_id' | 'tags' | 'is_soft_deleted' | 'createdAt' | 'updatedAt'
@@ -11,19 +12,4 @@ export type Thing = Omit<
    type?: string;
 };
 
-export type CreateThingData = Pick<
-   ThingDocument,
-   | 'user_uuid'
-   | 'name'
-   | 'detail_id'
-   | 'rating'
-   | 'status'
-   | 'times'
-   | 'tags'
-   | 'review'
-   | 'notes'
->;
-
-export type UpdateThingData = Partial<CreateThingData> & {
-   _id: string;
-};
+export type { CreateThingData, UpdateThingData };

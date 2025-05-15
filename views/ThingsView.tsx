@@ -34,10 +34,6 @@ export default function ThingsView({ userUuid }: ThingsViewProps) {
    };
 
    const [selectedThing, setSelectedThing] = useState<Thing | null>(null);
-   console.log(
-      'bb ~ ThingsView.tsx:22 ~ ThingsView ~ selectedThing:',
-      selectedThing
-   );
 
    const handleItemClick = useCallback(
       (thingId: string) => {
