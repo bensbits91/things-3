@@ -13,7 +13,7 @@ import { SearchResult, SearchResults } from '@/types/Search';
 export default function SearchView() {
    const { results = {} }: { results?: Partial<SearchResults> } = useSearch();
    console.log('bb ~ SearchView.tsx:15 ~ SearchView ~ results:', results);
-   const { books, movies, tv, videoGames } = results || {}; // todo: this is working but we have a type mismatch or something
+   const { books, movies, tv, videoGames } = results || {};
 
    const combinedResults = useMemo(() => {
       return [

@@ -1,5 +1,4 @@
 'use client';
-import { useEffect } from 'react';
 import { useSearch } from '@/hooks/search';
 
 // TODO: input validation
@@ -8,18 +7,11 @@ export default function SearchForm() {
    const {
       formData,
       isSearching,
-      results,
+      // results,
       errorData,
       handleChange,
       handleSubmit
    } = useSearch();
-   useEffect(() => {
-      // todo: remove this
-      if (results) {
-         console.log('bb ~ SearchForm.tsx:25 ~ SearchForm ~ results:', results);
-      }
-   }, [results]);
-
    const SearchingComponent = () => (
       <div className="dark-text flex flex-col items-center gap-4">
          Searching...
