@@ -15,8 +15,6 @@ import {
 } from '@radix-ui/react-select';
 import { SuccessIcon, ChevronIcon } from '@/components/icons';
 
-// todo: show indicator for initial selected Item on load
-
 interface SelectComponentProps {
    options?: object[];
    initialSelection?: number;

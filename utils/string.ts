@@ -4,3 +4,7 @@ export function truncateString(str: string, maxLength: number) {
    }
    return { newString: str, wasTruncated: false };
 }
+
+export function makeSafeQueryString(str: string) {
+   return encodeURIComponent(str.toLowerCase());
+}

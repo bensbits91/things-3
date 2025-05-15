@@ -2,17 +2,20 @@ import Image from 'next/image';
 import { Section } from '@/components/layout';
 import { Rating } from '@/components/inputs';
 import ThingInfoBar from './ThingInfoBar';
-import { truncateString } from '@/utils/truncateString';
+import { truncateString } from '@/utils/string';
 import { Thing } from '@/types/Thing';
+import { SearchResult } from '@/types/Search';
 
 interface ThingsListProps {
-   things: Thing[];
+   things: Thing[] | SearchResult[];
    handleItemClick: (thingId: string) => void;
+   isSearch?: boolean;
 }
 
 export default function ThingsList({
    things,
-   handleItemClick
+   handleItemClick,
+   isSearch = false
 }: ThingsListProps) {
    if (!things || things.length === 0) {
       return <p>No things found</p>;
@@ -20,14 +23,11 @@ export default function ThingsList({
    return (
       <Section>
          <div className="flex flex-col gap-0">
-            {things.map(thing => {
+            {things.map((thing, index) => {
                const {
-                  _id,
                   name,
                   main_image_url,
                   description,
-                  rating,
-                  statusText,
                   type,
                   date,
                   country
@@ -35,15 +35,30 @@ export default function ThingsList({
                if (!name) {
                   return null;
                }
+               let external_id = '',
+                  _id = '',
+                  rating = 0,
+                  statusText = 'Unset';
+               if (!isSearch) {
+                  _id = (thing as Thing)._id;
+                  rating = (thing as Thing).rating;
+                  statusText = (thing as Thing).statusText || 'Unset';
+               } else {
+                  external_id = (thing as SearchResult).external_id || '';
+               }
 
                const hasRating = typeof rating === 'number' && rating > 0;
                const hasStatusText = statusText && statusText !== 'Unset';
 
+               const key = isSearch
+                  ? external_id || `search-fallback-${index}`
+                  : _id || `thing-fallback-${index}`;
+
                return (
                   <div
-                     key={_id}
+                     key={key}
                      className="flex cursor-pointer items-center gap-2 border-b-2 p-4 transition-colors duration-300 hover:bg-[var(--bb-surface-a10)] md:gap-8"
-                     onClick={() => handleItemClick(_id)}>
+                     onClick={() => handleItemClick(key)}>
                      {main_image_url && (
                         <div className="relative hidden h-10 w-10 overflow-hidden rounded-[50%] md:block md:h-20 md:w-20">
                            <Image
@@ -58,7 +73,7 @@ export default function ThingsList({
                         </div>
                      )}
                      <div>
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="mb-2 flex items-center gap-2">
                            {main_image_url && (
                               <div className="relative h-10 w-10 overflow-hidden rounded-[50%] md:hidden md:h-20 md:w-20">
                                  <Image

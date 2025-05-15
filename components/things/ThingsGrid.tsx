@@ -2,17 +2,20 @@ import Image from 'next/image';
 import { Section } from '@/components/layout';
 import { Rating } from '@/components/inputs';
 import ThingInfoBar from './ThingInfoBar';
-import { truncateString } from '@/utils/truncateString';
+import { truncateString } from '@/utils/string';
 import { Thing } from '@/types/Thing';
+import { SearchResult } from '@/types/Search';
 
 interface ThingsGridProps {
-   things: Thing[];
+   things: Thing[] | SearchResult[];
    handleItemClick: (thingId: string) => void;
+   isSearch?: boolean;
 }
 
 export default function ThingsGrid({
    things,
-   handleItemClick
+   handleItemClick,
+   isSearch = false
 }: ThingsGridProps) {
    if (!things || things.length === 0) {
       return <p>No things found</p>;
@@ -20,14 +23,11 @@ export default function ThingsGrid({
    return (
       <Section width="lg">
          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {things.map(thing => {
+            {things.map((thing, index) => {
                const {
-                  _id,
                   name,
                   main_image_url,
                   description,
-                  rating,
-                  statusText,
                   type,
                   date,
                   country
@@ -35,15 +35,30 @@ export default function ThingsGrid({
                if (!name) {
                   return null;
                }
+               let external_id = '',
+                  _id = '',
+                  rating = 0,
+                  statusText = 'Unset';
+               if (!isSearch) {
+                  _id = (thing as Thing)._id;
+                  rating = (thing as Thing).rating;
+                  statusText = (thing as Thing).statusText || 'Unset';
+               } else {
+                  external_id = (thing as SearchResult).external_id || '';
+               }
 
                const hasRating = typeof rating === 'number' && rating > 0;
                const hasStatusText = statusText && statusText !== 'Unset';
 
+               const key = isSearch
+                  ? external_id || `search-fallback-${index}`
+                  : _id || `thing-fallback-${index}`;
+
                return (
                   <div
-                     key={_id}
+                     key={key}
                      className="flex cursor-pointer flex-col items-center overflow-hidden rounded-lg border shadow-[-1px_4px_8px_0] shadow-black/70 transition-colors duration-300 hover:bg-[var(--bb-surface-a10)]"
-                     onClick={() => handleItemClick(_id)}>
+                     onClick={() => handleItemClick(key)}>
                      {main_image_url && (
                         <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
                            <Image
